@@ -1,15 +1,15 @@
 print()
 print('------------ Лекция 1 ------------')
-list = []
+coll = []
 for i in range(0, 5):
-    list.append(int(input(f'Введите элемент {i}: ')))
-print(list)
+    coll.append(int(input(f'Введите элемент {i}: ')))
+print(coll)
 
-a = list[0]
+a = coll[0]
 
-for i in range(1, 5):
-    if list[i] > a:
-        a = list[i]
+for i in coll[1:]:
+    if i > a:
+        a = i
 print(f'Максимальное значение равно = {a}')
 print('------------- Конец --------------')
 print()
