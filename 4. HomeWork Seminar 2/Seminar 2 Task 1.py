@@ -6,12 +6,12 @@
 
 print()
 print('---------------- Семинар 2 -----------------')
-proizv = 1
+multiplication = 1
 coll = []
-n = int(input('Введите n: '))
+n = int(input('Введите количество чисел n: '))
 for i in range(1, n + 1):
-    proizv *= i
-    coll.append(proizv)
+    multiplication *= i
+    coll.append(multiplication)
 print(f'n = {n} -> {coll}')
 print('------------------ Конец -------------------')
 print()
