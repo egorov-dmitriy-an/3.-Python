@@ -7,7 +7,7 @@ n = int(input('Введите длину списка n = '))
 coll = []
 for i in range(0, n):
     coll.append(i)
-print(f'Исходный список:     {coll}')
+print(f'Упорядоченный список: {coll}')
 
 revers = []
 while (n > 0):
@@ -16,6 +16,6 @@ while (n > 0):
     del coll[index]
     n -= 1
     
-print(f'Перемешанный список: {revers}')
+print(f'Перемешанный список:  {revers}')
 print('------------------ Конец -------------------')
 print()
