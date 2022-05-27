@@ -2,7 +2,14 @@
 #Пример:
 #- [1.1, 1.2, 3.1, 5, 10.01] => 0.19
 
-coll =[1.1, 1.2, 3.1, 5, 10.01]
+print()
+print('---------------- Семинар 3 -----------------')
+n = int(input('Введите количество чисел в списке N = '))
+coll =[]
+for i in range(0, n):
+    temp = float(input(f'Введите число {i} = '))
+    coll.append(temp)
+
 print(coll, end =' => ')
 new = []
 point = 0
@@ -12,13 +19,13 @@ for i in coll:
         new.append(temp)
     if str(i)[::-1].find('.') > point:
         point = str(i)[::-1].find('.')
-
-max = new[0]
-min = new[0]
-
+max = abs(new[0])
+min = abs(new[0])
 for i in new:
-    if i > max:
-        max = i
-    if i < min:
-        min = i
+    if abs(i) > max:
+        max = abs(i)
+    if abs(i) < min:
+        min = abs(i)
 print(round(max - min, point))
+print('------------------ Конец -------------------')
+print()
