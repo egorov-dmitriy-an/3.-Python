@@ -65,7 +65,5 @@ for i in range(0, index):
         poly = poly + str(result[i]) + 'x^' + str(index - i - 1) + ' + '
 
 f = open('Seminar_4_Task_5_Polynom.txt', 'w+')
-f.write(polynom_1 + '\n')
-f.write(polynom_2 + '\n')
 f.write(poly)
 f.close()
