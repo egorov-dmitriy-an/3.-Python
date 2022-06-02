@@ -1,6 +1,9 @@
 # Задача 5. Даны два файла, в каждом из которых находится запись многочлена.
 # Задача - сформировать файл, содержащий сумму многочленов.
 
+from tkinter.font import nametofont
+
+
 x = open('Seminar_4_Task_4_Polynom_1.txt', 'r')
 polynom_1 = x.readline()
 x.close()
@@ -14,7 +17,8 @@ def Polypoly(polynom):
     i = 0
     while True:
         if polynom[i] == '^':
-            polynom = polynom[:i+1] + polynom[i+2:]
+            while str(polynom[i+1]).isdigit() == True:
+                polynom = polynom[:i+1] + polynom[i+2:]
         if polynom[i] == '=':
             break
         i += 1
@@ -61,5 +65,7 @@ for i in range(0, index):
         poly = poly + str(result[i]) + 'x^' + str(index - i - 1) + ' + '
 
 f = open('Seminar_4_Task_5_Polynom.txt', 'w+')
+f.write(polynom_1 + '\n')
+f.write(polynom_2 + '\n')
 f.write(poly)
 f.close()
