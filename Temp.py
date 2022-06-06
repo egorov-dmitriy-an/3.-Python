@@ -6,15 +6,8 @@ words_text = text.split()
 
 def Find_Liter(original):
     for i in original:
-        if original.find('а') != -1:
-            return False
-        elif original.find('б') != -1:
-            return False
-        elif original.find('в') != -1:
-            return False
-        else:
-            return True
-
+        if original.find('а' б ) != -1 or original.find('б') != -1 or original.find('в') != -1: return False
+        else: return True
 temp = []
 for i in words_text:
     if Find_Liter(i) == True:
