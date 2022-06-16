@@ -1,9 +1,12 @@
-# Задача 3. Создайте программу для игры в "Крестики-нолики".
+# Задача 3. Создайте программу для игры в "Крестики-нолики". Предложить улучшения кода для решённых задач
 print()
-print('--------------------- Семинар 5 ----------------------')
+print('--------------------- Семинар 6 ----------------------')
 
-# tic_tac_toe = [ '1', '2', '3', '4', '5', '6', '7', '8', '9'] заменим список с помощью list comprehension
-tic_tac_toe = [n for n in range(1, 10)]
+# Исходный фрагмент кода:
+# tic_tac_toe = [ '1', '2', '3', '4', '5', '6', '7', '8', '9'] 
+
+# Заменим создание списка с помощью list comprehension
+tic_tac_toe = [str(n) for n in range(1, 10)]
 
 def Victory(tab):
     if tab[0] == tab[1] and tab[1] == tab[2]:
@@ -25,10 +28,9 @@ def Victory(tab):
     else:
         return False
 
-
 def Print_list(a):
     for i in range(0, len(a), 3):
-        print(str(a[i:i+3]))
+        print(a[i:i+3])
 
 Print_list(tic_tac_toe)
 mod = 1
@@ -44,7 +46,7 @@ while True:
         index = int(input(f'Введите номер поля, в который нужно поставить нолик: '))
         tic_tac_toe[index - 1] = 'O'
         Print_list(tic_tac_toe)
-        mod += 12
+        mod += 1
 
     if Victory(tic_tac_toe) == True and mod % 2 == 0:
         print('Победил первый игрок')
