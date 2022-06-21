@@ -1,0 +1,10 @@
+Ivanov;Ivan;123;Work
+Petrov;Petr;124;Home
+Ivanov;Fedor;125;Home
+Nikolaev;Nikolay;126;Work
+Alekseev;Aleksey;127;Home
+Ivanov;Ivan;128;Home
+Petrov;Petr;129;Work
+Ivanov;Fedor;130;Work
+Nikolaev;Nikolay;131;Home
+Alekseev;Aleksey;132;Work
