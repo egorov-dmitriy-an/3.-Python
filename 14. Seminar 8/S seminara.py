@@ -1,6 +1,5 @@
 import csv
 
-
 with open('Prim.csv', encoding='UTF-8') as r_file:
     file = csv.DictReader(r_file, delimiter=',')
     count = 0
