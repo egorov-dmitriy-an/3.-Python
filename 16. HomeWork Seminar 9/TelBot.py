@@ -9,21 +9,35 @@ dispatcher = updater.dispatcher
 
 
 
-
-# def start(update, context):
-#     context.bot.send_message(update.effective_chat.id, "Добрый день!")
+stroka = ''
 
 
-# # def message(update, context):
-# #     text = update.message.text
-# #     context.bot.send_message(update.effective_chat.id, 'И тебе привет..')
-# #     return text
+def start(update, context):
+    global stroka
+    stroka = ''
+    context.bot.send_message(update.effective_chat.id, "Добрый день!")
 
-# start_handler = CommandHandler('start', start)
-# # message_handler = MessageHandler(Filters.text, message)
 
-# dispatcher.add_handler(start_handler)
-# # dispatcher.add_handler(message_handler)
+def message(update, context):
+    global stroka
+    mess_user = update.message.text
+    stroka += mess_user + ' ' 
+    context.bot.send_message(update.effective_chat.id, 'И тебе привет..')
+
+
+def info(update, context):
+    context.bot.send_message(update.effective_chat.id, stroka)
+
+
+
+start_handler = CommandHandler('start', start)
+message_handler = MessageHandler(Filters.text, message)
+info_handler = CommandHandler('info', info)
+
+
+dispatcher.add_handler(start_handler)
+dispatcher.add_handler(info_handler)
+dispatcher.add_handler(message_handler)
 
 
 print('Бот запущен')
