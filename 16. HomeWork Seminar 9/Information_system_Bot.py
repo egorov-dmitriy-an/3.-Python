@@ -1,3 +1,4 @@
+from distutils.log import info
 from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler, CallbackQueryHandler, ConversationHandler
 from datetime import datetime as dt
@@ -12,12 +13,12 @@ bot = Bot(token=bot_token)
 updater = Updater(token=bot_token, use_context=True)
 dispatcher = updater.dispatcher
 
-VIEW_ALL, SEARCH_KID = range(2)
+VIEW_ALL, SEARCH_KID, GET_ID, GET_INFO = range(4)
 
-contact = ''
-index = 0
-surname = ''
 variant = 0
+id_kid = ''
+index = ''
+list_kid = []
 
 
 def start(update, _):
@@ -37,87 +38,120 @@ def button_start(update, context):
     global variant
     variant = query.data
     query.answer()
-    print(variant)
     if variant == '1':
         context.bot.send_message(update.effective_chat.id, f'Отправьте любой символ для просмотра списка всех воспитанников')
+        
         return VIEW_ALL
+    
     elif variant == '2':
         context.bot.send_message(update.effective_chat.id, f'Введите фамилию: ')
+        
         return SEARCH_KID
 
 
 def print_all_kid(update, context):
+    
     with open('Seminar_10_data_kids.csv', 'r', encoding='UTF-8') as r_file:
+        global list_kid
         file = list(csv.reader(r_file, delimiter=','))
-        count = 0
         for row in file:
-            context.bot.send_message(update.effective_chat.id, f'{row[1]}.  {row[2]}  {row[3]}')
-            count += 1
+            context.bot.send_message(update.effective_chat.id, f'{row[1]}. {row[2]} {row[3]}')
+            list_kid.append(row[1])
+    time = dt.now().strftime('%H:%M')
+    with open('log_seminar_10_2.csv', 'a') as file:
+        file.write('{};Show the list of pupils;\n'
+                        .format(time))
+    
+    context.bot.send_message(update.effective_chat.id, f'\nВведите номер воспитанника: ')
+    
+    return GET_ID
 
 
+def get_id (update, context):
+    global index
+    global id_kid
+    index = update.message.text
+    
+    time = dt.now().strftime('%H:%M')
+    with open('log_seminar_10_2.csv', 'a') as file:
+        file.write('{};Search by pupil last name;\n'
+                            .format(time))
+    
+    if index in list_kid:
+        with open('Seminar_10_data_kids.csv', 'r', encoding='UTF-8') as r_file:
+            file = list(csv.reader(r_file, delimiter=','))
+            id_kid = file[int(index)][0]
+
+        context.bot.send_message(update.effective_chat.id, f'\nДля вывода информации о родителях нажмите 1\nДля вывода успеваемости нажмите 2')
+    
+        return GET_INFO
+
+    else:
+        context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!\nСпасибо что воспользовались нашей системой!')
+    
+        return ConversationHandler.END
 
 
+def get_info (update, context):
+    info = update.message.text
+    
+    if info == '1':
+        with open('Seminar_10_data_parent.csv', 'r', encoding='UTF-8') as r_file:
+            file = list(csv.reader(r_file, delimiter=','))
+            for row in file:
+                if id_kid == row[0]:
+                    context.bot.send_message(update.effective_chat.id, f'Фамилия: {row[1]}\nИмя: {row[2]}\nТелефон: {row[3]}\nОписание: {row[4]}')
+
+        time = dt.now().strftime('%H:%M')
+        with open('log_seminar_10_2.csv', 'a') as file:
+            file.write('{};Print of the pupils parents;\n'
+                                .format(time))
+
+    elif info == '2':
+        with open('Seminar_10_data_progress.csv', 'r', encoding='UTF-8') as r_file:
+            file = list(csv.reader(r_file, delimiter=','))
+            for row in file:
+                if id_kid == row[0]:
+                    context.bot.send_message(update.effective_chat.id, f'{row[1]} {row[2]}')
+
+                    time = dt.now().strftime('%H:%M')
+                    with open('log_seminar_10_2.csv', 'a') as file:
+                        file.write('{};Print of the pupils parents;\n'
+                                            .format(time))
+
+    else:
+        context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!')
+    context.bot.send_message(update.effective_chat.id, f'\nСпасибо что воспользовались нашей системой!')
+    
+    return ConversationHandler.END
 
 
-
-
-
-def message_search(update, context):
-    global surname
-    global variant
+def find_surname (update, context):
+    global list_kid
     count = 0
     surname = update.message.text
-    with open('guide_Bot.txt', 'r') as file:
-        while True:
-            line = file.readline()
-            if not line:
-                break
-            surname_sp = line.split(';')
-            if surname in surname_sp[0]:
-                context.bot.send_message(update.effective_chat.id, f'Фамилия: {surname_sp[0]}\nИмя: {surname_sp[1]}\nТелефон: {surname_sp[2]}\nОписание: {surname_sp[3]}')
-                count = 1
-    if count == 0:
-        context.bot.send_message(update.effective_chat.id, f'Совпадений не найдено')
 
     time = dt.now().strftime('%H:%M')
-    with open('log_seminar_10.csv', 'a') as file:
-        file.write(f'{time};Find contact;{surname}\n')
-        
-    return ConversationHandler.END
-    
+    with open('log_seminar_10_2.csv', 'a') as file:
+        file.write('{};Search by pupil last name;\n'
+                            .format(time))
 
-def message_save(update, context):
-    global contact
-    global index
-    if index == 0:
-        contact += update.message.text + ';'
-        context.bot.send_message(
-            update.effective_chat.id, f'Введите имя: ')
-        index += 1
-    elif index == 1:
-        contact += update.message.text + ';'
-        context.bot.send_message(
-            update.effective_chat.id, f'Введите телефон: ')
-        index += 1
-    elif index == 2:
-        contact += update.message.text + ';'
-        context.bot.send_message(
-            update.effective_chat.id, f'Введите описание: ')
-        index += 1
-    elif index == 3:
-        contact += update.message.text + ';'
-        con = contact.split(';')
-        context.bot.send_message(
-            update.effective_chat.id, f'Добавлен контакт: \nФамилия: {con[0]}\nИмя: {con[1]}\nТелефон: {con[2]}\nОписание: {con[3]}')
-        index += 1
-        with open('guide_Bot.txt', 'a') as file:
-            file.write(f'\n{contact}')
+    with open('Seminar_10_data_kids.csv', 'r', encoding='UTF-8') as r_file:
+        file = list(csv.reader(r_file, delimiter=','))
+        for row in file:
+            if surname in row[2]:
+                context.bot.send_message(update.effective_chat.id, f'{row[1]}. {row[2]} {row[3]}')
+                list_kid.append(row[1])
+                count = 1
+    if count == 0:
+        context.bot.send_message(update.effective_chat.id, f'Совпадений не найдено!\nСпасибо что воспользовались нашей системой!')
         
-        time = dt.now().strftime('%H:%M')
-        with open('log_seminar_10.csv', 'a') as file:
-            file.write(f'{time};Add contact;{contact}\n')
-    else:
         return ConversationHandler.END
+
+    else:
+        context.bot.send_message(update.effective_chat.id, f'\nВведите номер воспитанника: ')
+
+        return GET_ID
 
 
 def cancel(update, context):
@@ -128,18 +162,19 @@ start_handler = CommandHandler('start', start)
 button_start_handler = CallbackQueryHandler(button_start)
 cancel_handler = CommandHandler('cancel', cancel)
 print_all_kid_handler = MessageHandler(Filters.text, print_all_kid)
+get_id_handler = MessageHandler(Filters.text, get_id)
+get_info_handler = MessageHandler(Filters.text, get_info)
+find_surname_handler = MessageHandler(Filters.text, find_surname)
 
-
-
-message_handler_search = MessageHandler(Filters.text, message_search)
-message_handler_save = MessageHandler(Filters.text, message_save)
 
 conv_handler = ConversationHandler(
     entry_points=[start_handler, button_start_handler],
 
     states={
         VIEW_ALL: [print_all_kid_handler],
-        SEARCH_KID: [message_handler_save]
+        SEARCH_KID: [find_surname_handler],
+        GET_ID: [get_id_handler],
+        GET_INFO: [get_info_handler],
     },
 
     fallbacks=[cancel_handler]

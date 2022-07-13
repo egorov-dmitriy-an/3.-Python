@@ -2,7 +2,7 @@ import print_all_csv as pr_all_csv
 import check_module as ch_md
 import print_parent as pr_pa
 import print_progress as pr_pr
-import logger as log
+import Seminar_10_logger as log
 
 def button_click():
     print('------------------------------------------')

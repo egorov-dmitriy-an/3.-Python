@@ -1,5 +1,5 @@
 import data_provider as prov
-import logger as log
+import Seminar_10_logger as log
 
 def temperature_view(sensor):
     data = prov.get_temperature(sensor)

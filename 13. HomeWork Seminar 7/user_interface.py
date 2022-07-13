@@ -1,4 +1,4 @@
-import logger as log
+import Seminar_10_logger as log
 import data_provider as dt
 import check_module as ch
 import checking_file as chfl

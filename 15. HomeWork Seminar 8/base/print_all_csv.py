@@ -2,7 +2,7 @@ import csv
 import check_module as ch_md
 import check_module_list as ch_md_ls
 import find_surname as fi_su
-import logger as log
+import Seminar_10_logger as log
 
 def print_str(file_temp, sensor):
     with open(file_temp, encoding='UTF-8') as r_file:
