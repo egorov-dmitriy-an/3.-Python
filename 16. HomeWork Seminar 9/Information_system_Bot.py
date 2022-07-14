@@ -22,6 +22,8 @@ list_kid = []
 
 
 def start(update, _):
+    global list_kid
+    del list_kid[:]
     keyboard = [
         [
             InlineKeyboardButton("Показать полный список воспитанников", callback_data='1')],
@@ -83,14 +85,11 @@ def get_id (update, context):
             id_kid = file[int(index)][0]
 
         context.bot.send_message(update.effective_chat.id, f'\nДля вывода информации о родителях нажмите 1\nДля вывода успеваемости нажмите 2')
-    
         return GET_INFO
 
     else:
         context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!\nСпасибо что воспользовались нашей системой!')
-    
         return ConversationHandler.END
-
 
 def get_info (update, context):
     info = update.message.text
