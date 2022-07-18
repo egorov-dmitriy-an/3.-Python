@@ -88,8 +88,8 @@ def get_id (update, context):
         return GET_INFO
 
     else:
-        context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!\nСпасибо что воспользовались нашей системой!')
-        return ConversationHandler.END
+        context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!\nВведите номер воспитанника: ')
+        return GET_ID
 
 def get_info (update, context):
     info = update.message.text
@@ -119,10 +119,9 @@ def get_info (update, context):
                                             .format(time))
 
     else:
-        context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!')
-    context.bot.send_message(update.effective_chat.id, f'\nСпасибо что воспользовались нашей системой!')
+        context.bot.send_message(update.effective_chat.id, f'\nВведены некорректные данные!\nДля вывода информации о родителях нажмите 1\nДля вывода успеваемости нажмите 2')
     
-    return ConversationHandler.END
+    return GET_INFO
 
 
 def find_surname (update, context):
