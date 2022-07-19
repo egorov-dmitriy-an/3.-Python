@@ -7,8 +7,6 @@ print(coll)
 
 a = coll[0]
 
-
-
 for i in coll[1:]:
     if i > a:
         a = i
